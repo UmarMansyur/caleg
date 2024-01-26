@@ -20,7 +20,7 @@
             <div class="col-xl-9 col-md-12">
               <div class="text-sm-end">
                 <a href="{{ route('upload') }}" class="btn btn-primary btn-rounded waves-effect waves-light mb-2 me-2"><i
-                    class="mdi mdi-upload me-1"></i>Upload Form C1</a>
+                    class="mdi mdi-file me-1"></i>Lapor Form C1</a>
               </div>
             </div>
           </div>

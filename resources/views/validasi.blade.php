@@ -7,6 +7,9 @@
 
         <div class="">
           <div class="row mb-2 justify-content-end">
+            <div class="col-xl-9">
+              <button class="btn btn-light"><i class="mdi mdi-refresh"></i> Refresh</button>
+            </div>
             <div class="col-xl-3 col-md-12">
               <div class="pb-3 pb-xl-0">
                 <form class="email-search">

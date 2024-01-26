@@ -95,23 +95,23 @@
         <div class="row">
           <div class="col-4">
             <div class="text-center">
-              <h4 class="font-size-18">112</h4>
-              <h5 class="mb-1 text-muted font-size-14">Muhammad Umar Mansyur</h5>
+              <h4 class="font-size-18">700 Suara</h4>
+              <h5 class="mb-1 text-muted font-size-14">Hamim Susilo - 01</h5>
             </div>
           </div>
 
           <div class="col-4">
             <div class="text-center">
-              <h4 class="font-size-18">113</h4>
-              <h5 class="mb-1 text-muted font-size-14">Ali Rahmaan</h5>
+              <h4 class="font-size-18">670 Suara</h4>
+              <h5 class="mb-1 text-muted font-size-14">Adi Kusuma Darmawan - 02</h5>
 
             </div>
           </div>
 
           <div class="col-4">
             <div class="text-center">
-              <h4 class="font-size-18">5000</h4>
-              <h5 class="mb-1 text-muted font-size-14">Deny Septian</h5>
+              <h4 class="font-size-18">Yusuf Hanafi</h4>
+              <h5 class="mb-1 text-muted font-size-14">Yusuf Hanafi - 04</h5>
 
             </div>
           </div>
