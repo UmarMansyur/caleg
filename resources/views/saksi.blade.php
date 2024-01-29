@@ -91,7 +91,7 @@
                   <img src="assets/images/users/avatar-2.jpg" alt="" class="avatar rounded-circle img-thumbnail me-2">
                   <a href="#" class="text-body">Umar Mansyur</a>
                 </td>
-                <td>TPS 01</td>
+                <td>Tempat Pemungutan Suara 01</td>
                 <td>Tlanakan</td>
                 <td>Pamekasan</td>
                 <td class="text-center">
