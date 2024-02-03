@@ -20,8 +20,16 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'jenis_kelamin',
+        'role',
         'password',
+        'thumbnail',
+        'no_hp'
     ];
+
+    public function saksi() {
+        return $this->hasOne(SaksiModel::class, 'user_id', 'id');
+    }
 
     /**
      * The attributes that should be hidden for serialization.

@@ -2,20 +2,15 @@
 
 
 <body>
-
-
+    @include('sweetalert::alert')
     <div id="layout-wrapper">
-
-
         @include('layouts.header')
         <div class="vertical-menu">
-
             @include('layouts.navbar')
             <button type="button" class="btn btn-sm px-3 font-size-24 header-item waves-effect vertical-menu-btn">
                 <i class="bx bx-menu align-middle"></i>
             </button>
             @include('layouts.sidebar')
-
         </div>
         <!-- Left Sidebar End -->
         <header class="ishorizontal-topbar">
@@ -24,21 +19,21 @@
                     <!-- LOGO -->
                     <div class="navbar-brand-box">
                         <a href="index.html" class="logo logo">
-                            {{-- <span class="logo-sm">
-                                <img src="/assets/images/logo.svg" alt="" height="70">
+                            <span class="logo-sm">
+                                <img src="/assets/images/logo-1.svg" alt="" height="70">
                             </span>
                             <span class="logo-lg">
-                                <img src="/assets/images/logo.svg" alt="" height="70">
-                            </span> --}}
+                                <img src="/assets/images/logo-1.svg" alt="" height="70">
+                            </span>
                         </a>
 
                         <a href="index.html" class="logo logo-light">
-                            {{-- <span class="logo-sm">
-                                <img src="/assets/images/logo.svg" alt="" height="28">
+                            <span class="logo-sm">
+                                <img src="/assets/images/logo-1.svg" alt="" height="28">
                             </span>
                             <span class="logo-lg">
-                                <img src="/assets/images/logo.svg" alt="" height="28">
-                            </span> --}}
+                                <img src="/assets/images/logo-1.svg" alt="" height="28">
+                            </span>
                         </a>
                     </div>
 
@@ -63,7 +58,8 @@
                             aria-expanded="false">
                             <img class="rounded-circle header-profile-user" src="/assets/images/users/avatar-3.jpg"
                                 alt="Header Avatar">
-                            <span class="d-none d-xl-inline-block ms-2 fw-medium font-size-15">Sholeh Rachmatullah</span>
+                            <span class="d-none d-xl-inline-block ms-2 fw-medium font-size-15">Sholeh
+                                Rachmatullah</span>
                         </button>
                         <div class="dropdown-menu dropdown-menu-end pt-0">
                             <div class="p-3 border-bottom">
@@ -129,7 +125,7 @@
         <div class="main-content">
             <div class="page-content">
                 <div class="container-fluid">
-                  @yield('content')
+                    @yield('content')
 
                 </div>
                 <!-- container-fluid -->

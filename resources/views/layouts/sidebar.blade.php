@@ -12,6 +12,7 @@
         </a>
       </li>
       <li class="menu-title" data-key="t-menu">Aplikasi</li>
+      @if(auth()->user()->role == 'admin')
       <li>
         <a href="/tps">
           <i class="bx bx-station icon nav-icon"></i>
@@ -30,12 +31,16 @@
           <span class="menu-item" data-key="t-todo">Saksi</span>
         </a>
       </li>
+      @endif
+      @if(auth()->user()->role == 'saksi')
       <li>
-        <a href="/saksi/lapor">
+        <a href="/lapor">
           <i class="bx bx-file icon nav-icon"></i>
           <span class="menu-item" data-key="t-todo">Lapor Form C1</span>
         </a>
       </li>
+      @endif
+      @if(auth()->user()->role == 'verifikator' || auth()->user()->role == 'admin')
       <li>
         <a href="javascript: void(0);" class="has-arrow mm-collapsed" aria-expanded="false">
           <i class="bx bx-check-square icon nav-icon"></i>
@@ -47,6 +52,7 @@
           <li><a href="{{ route('Revisi') }}" data-key="t-products">Revisi</a></li>
         </ul>
       </li>
+      @endif
     </ul>
   </div>
   <!-- Sidebar -->

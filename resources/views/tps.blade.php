@@ -12,68 +12,83 @@
               </div>
             </div>
             <div class="feed-item-list">
-              <div>
-                <h5 class="font-size-16 mb-1">Tempat Pemungut Suara</h5>
-                <p class="text-muted text-truncate mb-4">Isi dengan benar!</p>
+              <h5 class="font-size-16 mb-1">Tempat Pemungut Suara</h5>
+              <p class="text-muted text-truncate mb-4">Isi dengan benar!</p>
+              <form method="POST"
+                action="{{ empty($tps) ? route('Tambah TPS') : route('Edit TPS', Crypt::encrypt($tps->id)) }}">
+                @csrf
                 <div class="mb-3">
-                  <form>
-                    <div>
-                      <div class="row">
-                        <div class="col-lg-4">
-                          <div class="mb-3">
-                            <label class="form-label" for="billing-name">Nama TPS: </label>
-                            <input type="text" class="form-control" id="billing-name" placeholder="Enter name">
-                          </div>
-                        </div>
-                        <div class="col-lg-4">
-                          <div class="mb-3">
-                            <label class="form-label" for="billing-email-address">RT/RW</label>
-                            <input type="email" class="form-control" id="billing-email-address"
-                              placeholder="Enter email">
-                          </div>
-                        </div>
-                        <div class="col-lg-4">
-                          <div class="mb-3">
-                            <label class="form-label" for="billing-email-address">Desa</label>
-                            <input type="email" class="form-control" id="billing-email-address"
-                              placeholder="Enter email">
-                          </div>
+                  <div>
+                    <div class="row">
+                      <div class="col-lg-4">
+                        <div class="mb-3">
+                          <label class="form-label" for="nama">Nama TPS: </label>
+                          <input type="text" class="form-control" id="nama" placeholder="Nama TPS" name="nama"
+                            value="{{ empty($tps) ? '' : $tps->nama }}">
                         </div>
                       </div>
-
-                      <div class="mb-3">
-                        <label class="form-label" for="billing-address">Alamat Lengkap</label>
-                        <textarea class="form-control" id="billing-address" rows="3"
-                          placeholder="Enter full address"></textarea>
+                      <div class="col-lg-4">
+                        <div class="mb-3">
+                          <label class="form-label" for="rt-rw">RT/RW</label>
+                          <input type="text" class="form-control" id="rt-rw" name="rt_rw" placeholder="RT/RW"
+                            value="{{ empty($tps) ? '' : $tps->rt_rw }}">
+                        </div>
                       </div>
-
-                      <div class="row">
-                        <div class="col-lg-4">
-                          <label for="kabupaten" class="form-label">Kabupaten: </label>
-                          <input type="text" name="kabupaten" id="kabupaten" class="form-control">
-                        </div>
-
-                        <div class="col-lg-4">
-                          <label for="kecamatan" class="form-label">Kecamatan: </label>
-                          <input type="text" name="kecamatan" id="kecamatan" class="form-control">
-                        </div>
-
-                        <div class="col-lg-4">
-                          <div class="mb-0">
-                            <label class="form-label" for="zip-code">Kode POS</label>
-                            <input type="text" class="form-control" id="zip-code" placeholder="Enter Postal code">
-                          </div>
+                      <div class="col-lg-4">
+                        <div class="mb-3">
+                          <label class="form-label" for="desa">Desa</label>
+                          <input type="text" class="form-control" id="desa" placeholder="Nama Desa" name="desa"
+                            value="{{ empty($tps) ? '' : $tps->desa }}">
                         </div>
                       </div>
                     </div>
-                  </form>
+
+                    <div class="mb-3">
+                      <label class="form-label" for="alamat">Alamat Lengkap</label>
+                      <textarea class="form-control" id="alamat" rows="3" placeholder="Alamat Lengkap" name="alamat">{{ 
+                            empty($tps) ? '' : $tps->alamat
+                          }}</textarea>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-lg-4">
+                        <label for="kabupaten" class="form-label">Kabupaten: </label>
+                        <input type="text" name="kabupaten" id="kabupaten" placeholder="Kabupaten"
+                          value="{{ empty($tps) ? '' : $tps->kabupaten }}" class="form-control">
+                      </div>
+
+                      <div class="col-lg-4">
+                        <label for="kecamatan" class="form-label">Kecamatan: </label>
+                        <input type="text" name="kecamatan" id="kecamatan" placeholder="Kecamatan"
+                          value="{{ empty($tps) ? '' : $tps->kecamatan }}" class="form-control">
+
+                      </div>
+
+                      <div class="col-lg-4">
+                        <div class="mb-0">
+                          <label class="form-label" for="kode_pos">Kode POS</label>
+                          <input type="text" class="form-control" id="kode_pos" placeholder="Kode Pos" name="kode_pos"
+                            value="{{ empty($tps) ? '' : $tps->kode_pos }}">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div class="mb-3">
-                <button class="btn btn-primary float-end">
-                  <i class="mdi mdi-plus"></i> Tambah
-                </button>
-              </div>
+                <div class="mb-3">
+                  @if (empty($tps))
+                  <button class="btn btn-primary float-end" type="submit">
+                    <i class="mdi mdi-plus"></i> Tambah
+                  </button>
+                  @else
+                  <a href="/tps" class="btn btn-light">
+                    <i class="mdi mdi-refresh"></i> Batal
+                  </a>
+                  <button class="btn btn-info float-end" type="submit">
+                    <i class="bx bx-save"></i> Simpan
+                  </button>
+                  @endif
+                </div>
+              </form>
             </div>
           </li>
           <li class="checkout-item">
@@ -87,75 +102,9 @@
                 <h5 class="font-size-16 mb-1">Daftar Tempat Pemungut Suara</h5>
                 <p class="text-muted text-truncate mb-4">Berikut adalah daftar TPS yang sudah terdaftar</p>
                 <div class="table-responsive">
-                  <table class="table table-bordered" id="dataTable">
-                    <thead>
-                      <tr>
-                        <th style="width: 5%" class="text-center">No</th>
-                        <th style="width: 20%">Nama TPS</th>
-                        <th style="width: 20%">Desa</th>
-                        <th style="width: 20%">Kecamatan</th>
-                        <th class="text-center">Kode POS</th>
-                        <th class="text-center">Aksi</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td class="text-center">1</td>
-                        <td>TPS 1</td>
-                        <td>Desa 1</td>
-                        <td>Kecamatan 1</td>
-                        <td class="text-center">12345</td>
-                        <td class="text-center">
-                          <button class="btn btn-warning"><i class="bx bx-pencil"></i> Edit</button>
-                          <button class="btn btn-danger"><i class="bx bx-trash"></i> Hapus</button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="text-center">2</td>
-                        <td>TPS 2</td>
-                        <td>Desa 2</td>
-                        <td>Kecamatan 2</td>
-                        <td class="text-center">12345</td>
-                        <td class="text-center">
-                          <button class="btn btn-warning"><i class="bx bx-pencil"></i> Edit</button>
-                          <button class="btn btn-danger"><i class="bx bx-trash"></i> Hapus</button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="text-center">3</td>
-                        <td>TPS 3</td>
-                        <td>Desa 3</td>
-                        <td>Kecamatan 3</td>
-                        <td class="text-center">12345</td>
-                        <td class="text-center">
-                          <button class="btn btn-warning"><i class="bx bx-pencil"></i> Edit</button>
-                          <button class="btn btn-danger"><i class="bx bx-trash"></i> Hapus</button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="text-center">4</td>
-                        <td>TPS 4</td>
-                        <td>Desa 4</td>
-                        <td>Kecamatan 4</td>
-                        <td class="text-center">12345</td>
-                        <td class="text-center">
-                          <button class="btn btn-warning"><i class="bx bx-pencil"></i> Edit</button>
-                          <button class="btn btn-danger"><i class="bx bx-trash"></i> Hapus</button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="text-center">5</td>
-                        <td>TPS 5</td>
-                        <td>Desa 5</td>
-                        <td>Kecamatan 5</td>
-                        <td class="text-center">12345</td>
-                        <td class="text-center">
-                          <button class="btn btn-warning"><i class="bx bx-file"></i> Edit</button>
-                          <button class="btn btn-danger"><i class="bx bx-trash"></i> Hapus</button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                  <div class="table-gridjs">
+                    <table id="table-gridjs"></table>
+                  </div>
                 </div>
               </div>
             </div>
@@ -165,4 +114,70 @@
     </div>
   </div>
 </div>
+
+<script>
+  async function getData() {
+    try {
+      const fetchResult = await fetch("{{ route('Data TPS') }}");
+      const data = await fetchResult.json();
+      return data;
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      return [];
+    }
+  }
+
+  const grid = new gridjs.Grid({
+    columns: ["No", "Nama TPS", "Desa", "Kecamatan", "Kode POS", {
+      id: 'action_button', // required for event listeners to work properly
+      name: "Aksi",
+      formatter: (_, row) => gridjs.html(`
+
+      <a href="/tps/data/${row.cells[5].data}" class="btn btn-warning"><i class="bx bx-pencil"></i> Edit</a>
+      <a href="javascript:void(0)" class="btn btn-danger" onclick="confirmDelete('${row.cells[5].data}')" type="button"><i class="bx bx-trash"></i> Hapus</a>
+      `)
+    }],
+    // columns tanggal lahir, alamat, rt/rw, kabupaten, kecamatan, kode pos, aksi
+    pagination: { limit: 5 },
+    search: true,
+    server: {
+      url: "{{ route('Data TPS') }}",
+      then: (data) => data.map((item) => Object.values(item)),
+    },
+  }).render(document.getElementById("table-gridjs"));
+
+
+  function confirmDelete(id) {
+    Swal.fire({
+      title: 'Apakah anda yakin?',
+      text: "Data yang dihapus tidak dapat dikembalikan!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#536de6',
+      cancelButtonColor: '#fc544b',
+      confirmButtonText: 'Ya, Hapus!',
+      cancelButtonText: 'Batal'
+    }).then(async (result) => {
+      if(result.isConfirmed) {
+        const response = await fetch(`/tps/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': "{{ csrf_token() }}"
+        }
+      });
+      const data = await response.json();
+      if(data) {
+        Swal.fire(
+          'Terhapus!',
+          'Data berhasil dihapus.',
+          'success'
+        ).then(() => {
+          window.location.reload();
+        })
+      }
+      }
+    })
+  }
+</script>
 @endsection

@@ -6,16 +6,16 @@
       <div class="card-body">
 
         <div class="">
-          <div class="row mb-2 justify-content-end">
-            <div class="col-xl-9">
-              <button class="btn btn-light"><i class="mdi mdi-refresh"></i> Refresh</button>
-            </div>
+          <div class="row mb-2">
             <div class="col-xl-3 col-md-12">
               <div class="pb-3 pb-xl-0">
-                <form class="email-search">
-                  <div class="position-relative">
-                    <input type="text" class="form-control bg-light" placeholder="Cari...">
-                    <span class="bx bx-search font-size-18"></span>
+                <form class="email-search" method="GET">
+                  <div class="input-group">
+                    <input type="text" class="form-control bg-light" placeholder="Cari..." aria-label="Cari..."
+                      aria-describedby="searchemail" name="search">
+                    <button class="btn btn-info">
+                      <i class="bx bx-search font-size-18"></i>
+                    </button>
                   </div>
                 </form>
               </div>
@@ -40,48 +40,63 @@
               </tr>
             </thead>
             <tbody>
+              @if(!$form->isEmpty())
+              @foreach($form as $item)
               <tr>
                 <td class="text-center">
-                  1
+                  {{ $loop->iteration }}
                 </td>
                 <td>
-                  TPS 01 - Tlanakan, Pamekasan
-                  </h5>
-                </td>
-                <td class="text-center">
                   <p class="mb-0">
-                    550
-
+                    {{ $item->tps->nama }}
                   </p>
                 </td>
                 <td class="text-center">
                   <p class="mb-0">
-                    250
+                    {{ $item->jumlah_suara_sah }}
                   </p>
                 </td>
                 <td class="text-center">
                   <p class="mb-0">
-                    800
+                    {{ $item->jumlah_suara_tidak_sah }}
+                  </p>
+                </td>
+                <td class="text-center">
+                  <p class="mb-0">
+                    {{ $item->jumlah_suara }}
                   </p>
                 </td>
 
                 <td>
                   <div class="text-center">
-                    <span class="badge rounded-pill bg-primary-subtle text-primary  font-size-11">Disetujui
-                      Verifikator</span>
+                    @if($item->status == 'pending')
+                    <span class="badge bg-info">Menunggu Konfirmasi</span>
+                    @elseif($item->status == 'verified')
+                    <span class="badge bg-success">Terverifikasi</span>
+                    @else
+                    <span class="badge bg-danger">Revisi</span>
+                    @endif
                   </div>
                 </td>
                 <td class="text-center">
                   <div class="d-flex justify-content-center">
-                    <a href="{{ route('Detail Berkas') }}" class="btn btn-info btn-sm waves-effect waves-light me-2"><i
-                        class="mdi mdi-eye-outline"></i>
-                      </a>
+                    <a href="{{ route('Detail Berkas', Crypt::encrypt($item->id)) }}"
+                      class="btn btn-info btn-sm waves-effect waves-light me-2"><i class="mdi mdi-eye-outline"></i>
+                    </a>
                   </div>
                 </td>
               </tr>
+              @endforeach
+              @endif
+              @if($form->isEmpty())
+              <tr>
+                <td colspan="7" class="text-center">Data tidak ditemukan</td>
+              </tr>
+              @endif
             </tbody>
           </table>
         </div>
+        {{ $form->links() }}
       </div>
     </div>
   </div>

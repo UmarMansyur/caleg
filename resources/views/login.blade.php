@@ -3,7 +3,7 @@
 <head>
 
   <meta charset="utf-8">
-  <title>Login | webadmin - Admin &amp; Dashboard Template</title>
+  <title>Login | AREP (Aplikasi Rekap Eviden Pemilu)</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta content="Premium Multipurpose Admin &amp; Dashboard Template" name="description">
   <meta content="Themesdesign" name="author">
@@ -152,47 +152,43 @@
 
 <body>
 
-  <!-- <body data-layout="horizontal"> -->
-
+  @include('sweetalert::alert')
   <div class="authentication-bg min-vh-100">
     <div class="bg-overlay bg-light"></div>
     <div class="container">
       <div class="d-flex flex-column min-vh-100 px-3 pt-4">
         <div class="row justify-content-center my-auto">
           <div class="col-md-8 col-lg-6 col-xl-5">
-
-            {{-- <div class="mb-4 pb-2">
-              <a href="index.html" class="d-block auth-logo">
-                <img src="/assets/images/logo-dark.png" alt="" height="30" class="auth-logo-dark me-start">
-                <img src="/assets/images/logo-light.png" alt="" height="30" class="auth-logo-light me-start">
-              </a>
-            </div> --}}
-
             <div class="card">
               <div class="card-body p-4">
-                <div class="text-center mt-2">
+                <div class="text-center mt-1">
+                  <a href="/login" class="text-center">
+                    <span><img src="/assets/images/logo-1.svg" alt="" height="70"></span>
+                  </a>
                   <h5>Welcome Back !</h5>
                   <p class="text-muted">Tekan Log In untuk masuk.</p>
                 </div>
                 <div class="p-2 mt-4">
-                  <form action="index.html">
-
+                  <form action="{{ route('authenticate') }}" method="POST">
+                    @csrf
                     <div class="mb-3">
-                      <label class="form-label" for="username">Username</label>
+                      <label class="form-label" for="email">Email</label>
                       <div class="position-relative input-custom-icon">
-                        <input type="text" class="form-control" id="username" placeholder="Enter username">
+                        <input type="text" class="form-control" id="email" placeholder="Email" required name="email">
                         <span class="bx bx-user"></span>
                       </div>
                     </div>
 
                     <div class="mb-3">
                       <div class="float-end">
-                        <a href="auth-recoverpw.html" class="text-muted text-decoration-underline">Forgot password?</a>
+                        <a href="/forgot-password" class="text-muted text-decoration-underline" tabindex="-1">Forgot
+                          password?</a>
                       </div>
                       <label class="form-label" for="password-input">Password</label>
                       <div class="position-relative auth-pass-inputgroup input-custom-icon">
                         <span class="bx bx-lock-alt"></span>
-                        <input type="password" class="form-control" id="password-input" placeholder="Enter password">
+                        <input type="password" class="form-control" id="password-input" placeholder="Password" required
+                          name="password">
                         <button type="button" class="btn btn-link position-absolute h-100 end-0 top-0"
                           id="password-addon">
                           <i class="mdi mdi-eye-outline font-size-18 text-muted"></i>
@@ -201,12 +197,12 @@
                     </div>
 
                     <div class="form-check py-1">
-                      <input type="checkbox" class="form-check-input" id="auth-remember-check">
+                      <input type="checkbox" class="form-check-input" id="auth-remember-check" name="remember">
                       <label class="form-check-label" for="auth-remember-check">Remember me</label>
                     </div>
 
                     <div class="mt-3">
-                      <a href="/" class="btn btn-primary w-100 waves-effect waves-light" type="submit">Log In</a>
+                      <button class="btn btn-primary w-100 waves-effect waves-light" type="submit">Log In</button>
                     </div>
                   </form>
                 </div>
@@ -222,7 +218,7 @@
             <div class="text-center p-4">
               <p>© <script>
                   document.write(new Date().getFullYear())
-                </script>Arep. Crafted with <i class="mdi mdi-heart text-danger"></i> by ProJs</p>
+                </script>~Arep. Crafted with <i class="mdi mdi-heart text-danger"></i> by ProJs</p>
             </div>
           </div>
         </div>
@@ -240,7 +236,18 @@
 
   <script src="/assets/js/pages/pass-addon.init.js"></script>
 
-
+  <script>
+  const element = document.getElementById('password-addon');
+  const input = document.getElementById('password-input');
+  document.addEventListener('click', function (event) {
+    const target = event.target;
+    if (target === element) {
+      const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+      input.setAttribute('type', type);
+      element.classList.toggle('active');
+    }
+  });
+  </script>
 
 </body>
 
