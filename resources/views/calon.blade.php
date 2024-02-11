@@ -105,7 +105,8 @@
         </div>
         <div class="d-flex align-items-center">
           <div>
-            <img src="{{ asset('storage/' . $c->foto) }}" alt="" class="avatar-md rounded-circle img-thumbnail">
+            <img src="{{ file_exists(asset('storage/' . $c->foto)) ? asset('storage/' . $c->foto) : $c->foto }}"
+              alt="" class="avatar-md rounded-circle">
           </div>
           <div class="flex-1 ms-3">
             <h5 class="font-size-16 mb-1"><a href="#" class="text-body">{{ $c->nama }}</a></h5>

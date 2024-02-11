@@ -18,7 +18,7 @@
                 <div class="d-flex">
                     <!-- LOGO -->
                     <div class="navbar-brand-box">
-                        <a href="index.html" class="logo logo">
+                        <a href="/" class="logo logo">
                             <span class="logo-sm">
                                 <img src="/assets/images/logo-1.svg" alt="" height="70">
                             </span>
@@ -27,7 +27,7 @@
                             </span>
                         </a>
 
-                        <a href="index.html" class="logo logo-light">
+                        <a href="/" class="logo logo-light">
                             <span class="logo-sm">
                                 <img src="/assets/images/logo-1.svg" alt="" height="28">
                             </span>

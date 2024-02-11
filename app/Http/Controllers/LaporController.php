@@ -68,6 +68,11 @@ class LaporController extends Controller
             }
 
             $exist = FormModel::where('saksi_id', $saksi->id)->where('tps_id', $saksi->tps_id)->first();
+            if ($exist->status == 'verified') {
+                return response()->json(['status' => 'error', 'message' => 'Laporan sudah diverifikasi']);
+            }
+
+            
             $suara_calon = 0;
             if (empty($exist)) {
                 $exist = FormModel::create([

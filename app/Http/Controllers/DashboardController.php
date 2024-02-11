@@ -18,8 +18,8 @@ class DashboardController extends Controller
         $jumlah_calon = CalonModel::count();
         $saksi = SaksiModel::count();
         $saksi_melapor = FormModel::join('saksi', 'form_c1.saksi_id', '=', 'saksi.id')->count();
-        $perolehan_suara = DB::select('SELECT calon.no_urut, calon.nama, SUM(detail_form_c1.jumlah_suara) as jumlah_suara FROM detail_form_c1 JOIN calon ON detail_form_c1.calon_id = calon.id GROUP BY calon.id, calon.nama, calon.no_urut ORDER BY jumlah_suara DESC LIMIT 3');
-        $history = FormModel::with('saksi', 'detail', 'detail.calon')->orderBy('created_at', 'desc')->limit(5)->get();
+        $perolehan_suara = DB::select('SELECT calon.no_urut, calon.nama, SUM(detail_form_c1.jumlah_suara) as jumlah_suara FROM detail_form_c1 JOIN calon ON detail_form_c1.calon_id = calon.id JOIN form_c1 ON detail_form_c1.form_c1_id = form_c1.id WHERE status = "verified" GROUP BY calon.id, calon.nama, calon.no_urut ORDER BY jumlah_suara DESC LIMIT 3');
+        $history = FormModel::with('saksi', 'detail', 'detail.calon')->where('status', 'verified')->orderBy('created_at', 'desc')->limit(5)->get();
         if(auth()->user()->role == 'saksi') {
             $data = SaksiModel::with('user', 'tps')->where('user_id', auth()->user()->id)->first();
             $form = FormModel::where('saksi_id', $data->id)->first();
@@ -29,7 +29,7 @@ class DashboardController extends Controller
     }
     public function dataArray()
     {
-        $perolehan_suara = DB::select('SELECT calon.no_urut, calon.nama, SUM(detail_form_c1.jumlah_suara) as jumlah_suara FROM detail_form_c1 JOIN calon ON detail_form_c1.calon_id = calon.id GROUP BY calon.id, calon.nama, calon.no_urut');
+        $perolehan_suara = DB::select("SELECT calon.no_urut, calon.nama, SUM(detail_form_c1.jumlah_suara) as jumlah_suara FROM detail_form_c1 JOIN calon ON detail_form_c1.calon_id = calon.id JOIN form_c1 ON detail_form_c1.form_c1_id = form_c1.id WHERE status = 'verified' GROUP BY calon.id, calon.nama, calon.no_urut");
         return response()->json($perolehan_suara);
     }
 }

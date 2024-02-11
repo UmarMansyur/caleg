@@ -138,7 +138,11 @@
       `)
     }],
     // columns tanggal lahir, alamat, rt/rw, kabupaten, kecamatan, kode pos, aksi
-    pagination: { limit: 5 },
+    // ubah ke bahasa indonesia
+    
+    pagination: {
+      limit: 5,
+     },
     search: true,
     server: {
       url: "{{ route('Data TPS') }}",

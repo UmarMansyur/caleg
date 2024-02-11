@@ -42,6 +42,9 @@ class ApiSaksi extends Controller
                     'message' => 'Anda tidak terdaftar sebagai saksi'
                 ]);
             }
+
+
+
             $exist = FormModel::where('tps_id', $user->saksi->tps_id)->where('saksi_id', $user->saksi->id)->first();
             if (empty($exist)) {
                 return response()->json([
@@ -49,6 +52,14 @@ class ApiSaksi extends Controller
                     'message' => 'Anda belum melaporkan suara sah, laporkan suara sah terlebih dahulu dengan mengirimkan format: Suara Calon NOMOR_URUT_CALON1#NOMOR_URUT_CALON2#NOMOR_URUT_CALON3#NOMOR_URUT_CALON4#NOMOR_URUT_CALON5#NOMOR_URUT_CALON6#NOMOR_URUT_CALON7#NOMOR_URUT_CALON8'
                 ]);
             }
+
+            if ($exist->status == 'verified') {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Data sudah diverifikasi'
+                ]);
+            }
+
             $detail = DetailForm::with(['calon'])->where('form_c1_id', $exist->id)->get();
             return response()->json([
                 'status' => 'success',
@@ -110,6 +121,14 @@ class ApiSaksi extends Controller
                 ]);
             }
 
+            if ($exist->status == 'verified') {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Data sudah diverifikasi'
+                ]);
+            }
+
+
             $detail = [];
             foreach ($request->detail as $key => $value) {
 
@@ -167,7 +186,7 @@ class ApiSaksi extends Controller
     {
         try {
             $user = User::with(['saksi', 'saksi.tps'])->where('no_hp', $request->query('saksi'))->where('role', 'saksi')->first();
-            if (auth()->user()->id > 0) {
+            if (auth()->user() != null || auth()->user() != '') {
                 $user = User::with(['saksi', 'saksi.tps'])->where('id', auth()->user()->id)->where('role', 'saksi')->first();
             }
             DB::beginTransaction();
@@ -176,6 +195,12 @@ class ApiSaksi extends Controller
                 return response()->json([
                     'status' => 'error',
                     'message' => 'Anda belum melaporkan suara sah, laporkan suara sah terlebih dahulu dengan mengirimkan format: Suara Calon NOMOR_URUT_CALON1#NOMOR_URUT_CALON2#NOMOR_URUT_CALON3#NOMOR_URUT_CALON4#NOMOR_URUT_CALON5#NOMOR_URUT_CALON6#NOMOR_URUT_CALON7#NOMOR_URUT_CALON8'
+                ]);
+            }
+            if ($exist->status == 'verified') {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Data sudah diverifikasi'
                 ]);
             }
             $suara_sah = DetailForm::where('form_c1_id', $exist->id)->get()->sum('jumlah_suara');
@@ -218,7 +243,7 @@ class ApiSaksi extends Controller
     {
         try {
             $user = User::with(['saksi', 'saksi.tps'])->where('no_hp', $request->query('saksi'))->where('role', 'saksi')->first();
-            if (auth()->user()->id > 0) {
+            if (auth()->user() != null || auth()->user() != '') {
                 $user = User::with(['saksi', 'saksi.tps'])->where('id', auth()->user()->id)->where('role', 'saksi')->first();
             }
             if (empty($user)) {
@@ -233,6 +258,12 @@ class ApiSaksi extends Controller
                 return response()->json([
                     'status' => 'error',
                     'message' => 'Anda belum melaporkan suara sah, laporkan suara sah terlebih dahulu dengan mengirimkan format: Suara Calon NOMOR_URUT_CALON1#NOMOR_URUT_CALON2#NOMOR_URUT_CALON3#NOMOR_URUT_CALON4#NOMOR_URUT_CALON5#NOMOR_URUT_CALON6#NOMOR_URUT_CALON7#NOMOR_URUT_CALON8'
+                ]);
+            }
+            if ($exist->status == 'verified') {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Data sudah diverifikasi'
                 ]);
             }
             $jumlah_suara = DetailForm::where('form_c1_id', $exist->id)->get()->sum('jumlah_suara');
@@ -276,7 +307,7 @@ class ApiSaksi extends Controller
     {
         try {
             $user = User::with(['saksi', 'saksi.tps'])->where('no_hp', $request->query('saksi'))->where('role', 'saksi')->first();
-            if (auth()->user()->id > 0) {
+            if (auth()->user() != null || auth()->user() != '') {
                 $user = User::with(['saksi', 'saksi.tps'])->where('id', auth()->user()->id)->where('role', 'saksi')->first();
             }
             if (empty($user)) {
@@ -285,7 +316,9 @@ class ApiSaksi extends Controller
                     'message' => 'Anda tidak terdaftar sebagai saksi'
                 ]);
             }
+
             $exist = FormModel::where('tps_id', $user->saksi->tps_id)->where('saksi_id', $user->saksi->id)->first();
+
             if (empty($exist)) {
                 $exist = FormModel::create([
                     'tps_id' => $user->saksi->tps_id,
@@ -298,13 +331,19 @@ class ApiSaksi extends Controller
                 ]);
             }
 
-            if ($request->hasFile('file')) {
-                if(file_exists(storage_path('app/public/c1/' . $exist->file_c1))){
-                    unlink(storage_path('app/public/c1/' . $exist->file_c1));
-                }
+            if ($exist->status == 'verified') {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Data sudah diverifikasi'
+                ]);
             }
 
-            $exist->file_c1 = Storage::putFile('public/c1', $request->file('file'));
+            if ($request->hasFile('file')) {
+                if (file_exists(storage_path('app/public/' . $exist->file_c1)) && $exist->file_c1) {
+                    unlink(storage_path('app/public/' . $exist->file_c1));
+                }
+                $exist->file_c1 = Storage::put('public', $request->file('file'));
+            }
             $exist->save();
             return response()->json([
                 'status' => 'success',

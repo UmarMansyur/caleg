@@ -21,7 +21,7 @@ class AdminAuthentication
         if (Auth::user() && Auth::user()->id >= 1) {
             return $next($request);
        }
-       Alert::error('Error', 'You are not authorized to access this page');
+       Alert::error('Gagal', 'Kamu tidak memiliki akses');
        return redirect('/login');
     }
 }

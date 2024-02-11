@@ -22,24 +22,24 @@
               {{ auth()->user()->role }}
             </span>
             <h5 class="">{{ auth()->user()->name }}</h5>
-            <p class="text-muted mt-3">{{$data->tps->kecamatan }} {{ $data->tps->kabupaten }}</p>
+            <p class="text-muted mt-3" style="text-transform: uppercase">{{$data->tps->kecamatan }} {{ $data->tps->kabupaten }}</p>
 
             <div class="row g-0 mt-3 pt-1 align-items-end">
               <div class="col-3">
                 <div class="mt-1">
-                  <h4 class="font-size-16">{{ $form->jumlah_suara }}</h4>
+                  <h4 class="font-size-16">{{ $form->jumlah_suara ?? 0 }}</h4>
                   <p class="text-muted mb-1">Total Suara</p>
                 </div>
               </div>
               <div class="col-3">
                 <div class="mt-1">
-                  <h4 class="font-size-16">{{ $form->jumlah_suara_sah }}</h4>
+                  <h4 class="font-size-16">{{ $form->jumlah_suara_sah ?? 0 }}</h4>
                   <p class="text-muted mb-1">Suara Sah</p>
                 </div>
               </div>
               <div class="col-3">
                 <div class="mt-1">
-                  <h4 class="font-size-16">{{ $form->jumlah_suara_tidak_sah }}</h4>
+                  <h4 class="font-size-16">{{ $form->jumlah_suara_tidak_sah ?? 0 }}</h4>
                   <p class="text-muted mb-1">Suara Tidak Sah</p>
                 </div>
               </div>

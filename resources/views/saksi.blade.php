@@ -42,7 +42,7 @@
                     <select class="form-select select2" aria-label="Default select example" id="tps_id" name="tps_id">
                       <option value="">Pilih TPS</option>
                       @foreach ($tps as $item)
-                      <option value="{{ $item->id }}">{{ $item->nama }}</option>
+                      <option value="{{ $item->id }}">{{ $item->nama }} - {{ $item->desa}}</option>
                       @endforeach
                     </select>
                   </div>
@@ -167,10 +167,10 @@
     nama.value = id.user.name;
     jenis_kelamin.value = id.user.jenis_kelamin;
     tps_id.value = id.tps_id;
-    email.value = id.email;
-    choice2.setChoiceByValue(id.jenis_kelamin);
+    email.value = id.user.email;
+    choice2.setChoiceByValue(id.user.jenis_kelamin);
     choice.setChoiceByValue(id.tps_id.toString());
-    nomor_hp.value = id.no_hp;
+    nomor_hp.value = id.user.no_hp;
   }
 
 

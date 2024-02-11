@@ -89,7 +89,7 @@ Route::group(['prefix' => '', 'middleware' => 'admin'], function () {
         Route::get('/saksi', [LaporController::class, 'show'])->name('Data Lapor');
     });
     Route::get('/', [DashboardController::class, 'index'])->name('Beranda');
-    Route::get('/lapor', [LaporController::class, 'upload']);
+    Route::get('/lapor', [LaporController::class, 'upload'])->name('Saksi Lapor');
 
     Route::group(['prefix' => 'verifikator'], function () {
         Route::get('/menunggu-persetujuan', [VerifikatorController::class, 'index'])->name('Menunggu Persetujuan');

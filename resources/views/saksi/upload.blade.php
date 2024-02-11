@@ -4,11 +4,14 @@
   <div class="col-6 mb-3">
     <h4 class="card-title">Ikuti Step untuk mengupload form C1</h4>
   </div>
-  <div class="col-6 mb-3 text-end">
-    <a class="btn btn-info" href="/saksi/lapor" type="button">
-      <i class="bx bx-arrow-back"></i> Kembali
-    </a>
+  @if(!empty($form) && $form->status == 'verified')
+  <div class="col-lg-12">
+    <div class="alert alert-warning">
+      <h6 class="alert-heading">Perhatian!</h6>
+      <p class="mb-0">Laporan anda sudah diverifikasi oleh verifikator. Anda tidak dapat mengubah laporan ini!</p>
+    </div>
   </div>
+  @endif
   <div class="col-lg-12">
     <div id="addproduct-accordion" class="custom-accordion">
       <div class="card">
@@ -42,24 +45,23 @@
             <form action="{{ route('Tambah Lapor') }}" method="POST">
               @csrf
               <div class="row">
-
                 <div class="col-6 mt-1">
-                  <button class="btn btn-light"><i class="mdi mdi-refresh"></i>Refresh</button>
+                  <a href="/lapor" class="btn btn-light"><i class="mdi mdi-refresh"></i>Refresh</a>
                 </div>
                 <div class="col-6 mt-1 text-end">
-                  <button class="btn btn-primary"><i class="mdi mdi-content-save"></i>Simpan</button>
+                  <button class="btn btn-primary"><i class="mdi mdi-content-save"></i> Simpan</button>
                 </div>
 
               </div>
 
               <div>
-                <div class="table-responsive mt-3 d-none d-md-block">
-                  <table class="table table-bordered">
-                    <thead>
+                <div class="table-responsive mt-3">
+                  <table class="table table-bordered table-nowrap align-middle">
+                    <thead class="align-middle">
                       <tr>
                         <th style="width: 200px" class="text-center">Nomor Urut</th>
                         <th style="width: 500px">Nama Calon</th>
-                        <th style="width: 200px" class="text-center" colspan="3">Perolehan Suara</th>
+                        <th style="width: 900px" class="text-center" colspan="3">Perolehan Suara</th>
                       </tr>
                     </thead>
                     <tbody class="align-middle">
@@ -67,52 +69,58 @@
                       <tr>
                         <td class="text-center">{{$item->no_urut}}</td>
                         <td>{{ $item->nama }}</td>
-                        <td class="text-center">
+                        <td style="width: 300px" >
                           <input type="text" name="vote-{{$item->id}}[]" pattern="[0-9]" maxlength="1"
-                            class="form-control text-center" placeholder="0-9" onkeyup="rekap('{{$item->id}}')"
-                            value="{{ !empty($item->detail) && $item->detail[0]->jumlah_suara > 99 ? strval($item->detail[0]->jumlah_suara)[0] : '0' }}">
+                            class="form-control text-center"  onkeyup="rekap('{{$item->id}}')"
+                            value="{{ !empty($item->detail) && count($item->detail) > 0 && count($item->detail) > 0 && $item->detail[0]->jumlah_suara > 99 ? strval($item->detail[0]->jumlah_suara)[0] : '' }}">
                           <input type="hidden" name="id_calon[]" value="{{ $item->id }}">
                         </td>
-                        <td class="text-center">
-                          @if (!empty($item->detail) && $item->detail[0]->jumlah_suara > 9 &&
+                        <td  style="width: 300px" class="text-center">
+                          @if (!empty($item->detail) && count($item->detail) > 0 && $item->detail[0]->jumlah_suara > 9
+                          &&
                           $item->detail[0]->jumlah_suara < 100 ) <input type="text" name="vote-{{$item->id}}[]"
                             pattern="[0-9]" maxlength="1"
-                            value="{{ !empty($item->detail) ? strval($item->detail[0]->jumlah_suara)[0] : '0' }}"
-                            class="form-control text-center" placeholder="0-9" onkeyup="rekap('{{$item->id}}')">
+                            value="{{ !empty($item->detail) && count($item->detail) > 0 ? strval($item->detail[0]->jumlah_suara)[0] : '' }}"
+                            class="form-control text-center"  onkeyup="rekap('{{$item->id}}')">
                             @endif
-                            @if (!empty($item->detail) && $item->detail[0]->jumlah_suara > 99)
+                            @if (!empty($item->detail) && count($item->detail) > 0 && $item->detail[0]->jumlah_suara >
+                            99)
                             <input type="text" name="vote-{{$item->id}}[]" pattern="[0-9]" maxlength="1"
-                              value="{{ !empty($item->detail) ? strval($item->detail[0]->jumlah_suara)[1] : '0' }}"
-                              class="form-control text-center" placeholder="0-9" onkeyup="rekap('{{$item->id}}')">
+                              value="{{ !empty($item->detail) && count($item->detail) > 0 ? strval($item->detail[0]->jumlah_suara)[1] : '' }}"
+                              class="form-control text-center"  onkeyup="rekap('{{$item->id}}')">
                             @endif
-                            @if (!empty($item->detail) && $item->detail[0]->jumlah_suara < 10) <input type="text"
-                              name="vote-{{$item->id}}[]" pattern="[0-9]" maxlength="1" class="form-control text-center"
-                              placeholder="0-9" onkeyup="rekap('{{$item->id}}')" value="0">
+                            @if (!empty($item->detail) && count($item->detail) > 0 && $item->detail[0]->jumlah_suara <
+                              10) <input type="text" name="vote-{{$item->id}}[]" pattern="[0-9]" maxlength="1"
+                              class="form-control text-center"  onkeyup="rekap('{{$item->id}}')">
                               @endif
-                              @if (empty($item->detail))
+                              @if (count($item->detail) == 0)
                               <input type="text" name="vote-{{$item->id}}[]" pattern="[0-9]" maxlength="1"
-                                class="form-control text-center" placeholder="0-9" onkeyup="rekap('{{$item->id}}')"
-                                value="0">
+                                class="form-control text-center"  onkeyup="rekap('{{$item->id}}')" value="0">
                               @endif
-                        </td>
-                        <td class="text-center">
-                          @if (!empty($item->detail) && $item->detail[0]->jumlah_suara <= 9) <input type="text"
-                            name="vote-{{$item->id}}[]" pattern="[0-9]" maxlength="1" value="{{ empty($item->detail) && $item->detail[0]->jumlah_suara > 0 ? '0' :
+                        </td >
+                        <td  style="width: 300px" class="text-center">
+                          @if (!empty($item->detail) && count($item->detail) > 0 && $item->detail[0]->jumlah_suara <= 9)
+                            <input type="text" name="vote-{{$item->id}}[]" pattern="[0-9]" maxlength="1" value="{{ empty($item->detail) && $item->detail[0]->jumlah_suara > 0 ? '' :
                           strval($item->detail[0]->jumlah_suara)[0]}}" class="form-control text-center"
-                            placeholder="0-9" onkeyup="rekap('{{$item->id}}')">
+                             onkeyup="rekap('{{$item->id}}')">
                             @endif
                             <input type="hidden" name="rekapSuaraCalon[]">
-                            @if (!empty($item->detail) && $item->detail[0]->jumlah_suara > 9 &&
+                            @if (!empty($item->detail) && count($item->detail) > 0 && $item->detail[0]->jumlah_suara > 9 &&
                             $item->detail[0]->jumlah_suara < 100 ) <input type="text" name="vote-{{$item->id}}[]"
-                              pattern="[0-9]" maxlength="1" value="{{ empty($item->detail) ? '0' :
+                              pattern="[0-9]" maxlength="1" value="{{ empty($item->detail) ? '' :
                           strval($item->detail[0]->jumlah_suara)[1]}}" class="form-control text-center"
-                              placeholder="0-9" onkeyup="rekap('{{$item->id}}')">
-
+                               onkeyup="rekap('{{$item->id}}')">
                               @endif
-                              @if (!empty($item->detail) && $item->detail[0]->jumlah_suara > 99)
+                          
+                              @if (!empty($item->detail) && count($item->detail) > 0 && $item->detail[0]->jumlah_suara >
+                              99)
                               <input type="text" name="vote-{{$item->id}}[]" pattern="[0-9]" maxlength="1"
-                                value="{{ empty($item->detail) ? '0' : strval($item->detail[0]->jumlah_suara)[2] }}"
-                                class="form-control text-center" placeholder="0-9" onkeyup="rekap('{{$item->id}}')">
+                                value="{{ empty($item->detail) ? '' : strval($item->detail[0]->jumlah_suara)[2] }}"
+                                class="form-control text-center"  onkeyup="rekap('{{$item->id}}')">
+                              @endif
+                              @if (count($item->detail) == 0)
+                              <input type="text" name="vote-{{$item->id}}[]" pattern="[0-9]" maxlength="1"
+                                class="form-control text-center"  onkeyup="rekap('{{$item->id}}')">
                               @endif
                         </td>
                       </tr>
@@ -124,45 +132,42 @@
                         <td class="text-center">
                           @if (!empty($form) && $form->jumlah_suara_sah_partai > 99)
                           <input type="text" name="partai[0]" pattern="[0-9]" maxlength="1"
-                            class="form-control text-center" placeholder="0-9" onkeyup="rekap()"
+                            class="form-control text-center"  onkeyup="rekap()"
                             value="{{ strval($form->jumlah_suara_sah_partai)[0] }}">
                           @else
                           <input type="text" name="partai[0]" pattern="[0-9]" maxlength="1"
-                            class="form-control text-center" placeholder="0-9" onkeyup="rekap()">
+                            class="form-control text-center"  onkeyup="rekap()">
                           @endif
                         </td>
                         <td class="text-center">
                           @if (!empty($form) && $form->jumlah_suara_sah_partai > 99)
                           <input type="text" name="partai[1]" pattern="[0-9]" maxlength="1"
-                            class="form-control text-center" placeholder="0-9" onkeyup="rekap()"
+                            class="form-control text-center"  onkeyup="rekap()"
                             value="{{ strval($form->jumlah_suara_sah_partai)[2] }}">
-                          @endif
-                          @if (!empty($form) && $form->jumlah_suara_sah_partai > 9 && $form->jumlah_suara_sah_partai <
+                          @elseif(!empty($form) && $form->jumlah_suara_sah_partai > 9 && $form->jumlah_suara_sah_partai <
                             100) <input type="text" name="partai[1]" pattern="[0-9]" maxlength="1"
-                            class="form-control text-center" placeholder="0-9" onkeyup="rekap()"
+                            class="form-control text-center"  onkeyup="rekap()"
                             value="{{ strval($form->jumlah_suara_sah_partai)[1] }}">
+                            @else
+                            <input type="text" name="partai[1]" pattern="[0-9]" maxlength="1"
+                              class="form-control text-center"  onkeyup="rekap()">
                             @endif
-                            @if (empty($form) || $form->jumlah_suara_sah_partai < 10) <input type="text"
-                              name="partai[1]" pattern="[0-9]" maxlength="1" class="form-control text-center"
-                              placeholder="0-9" onkeyup="rekap()">
-                              @endif
+
                         </td>
                         <td class="text-center">
                           @if (!empty($form) && $form->jumlah_suara_sah_partai > 99)
                           <input type="text" name="partai[2]" pattern="[0-9]" maxlength="1"
-                            class="form-control text-center" placeholder="0-9" onkeyup="rekap()"
+                            class="form-control text-center"  onkeyup="rekap()"
                             value="{{ strval($form->jumlah_suara_sah_partai)[2] }}">
-                          @endif
-                          @if (!empty($form) && $form->jumlah_suara_sah_partai > 9 && $form->jumlah_suara_sah_partai <
+                          @elseif (!empty($form) && $form->jumlah_suara_sah_partai > 9 && $form->jumlah_suara_sah_partai <
                             100) <input type="text" name="partai[2]" pattern="[0-9]" maxlength="1"
-                            class="form-control text-center" placeholder="0-9" onkeyup="rekap()"
+                            class="form-control text-center"  onkeyup="rekap()"
                             value="{{ strval($form->jumlah_suara_sah_partai)[2] }}">
+                            @else
+                            <input type="text" name="partai[2]" pattern="[0-9]" maxlength="1"
+                              class="form-control text-center"  onkeyup="rekap()">
                             @endif
-                            @if (empty($form) || $form->jumlah_suara_sah_partai < 10) <input type="text"
-                              name="partai[2]" pattern="[0-9]" maxlength="1" class="form-control text-center"
-                              placeholder="0-9" onkeyup="rekap()">
-                              @endif
-                              <input type="hidden" name="rekapSuaraPartai[]">
+                            <input type="hidden" name="rekapSuaraPartai[]">
                         </td>
                       </tr>
                       <tr class="align-middle">
@@ -177,25 +182,22 @@
                         <th class="text-center" id="suara2">
                           @if (!empty($form) && $form->jumlah_suara_sah > 9 && $form->jumlah_suara_sah < 100) {{
                             strval($form->jumlah_suara_sah)[0] }}
-                            @endif
-                            @if (!empty($form) && $form->jumlah_suara_sah > 99)
+                            @elseif (!empty($form) && $form->jumlah_suara_sah > 99)
                             {{ strval($form->jumlah_suara_sah)[1] }}
+                            @else
+                            0
                             @endif
-                            @if (empty($form) || $form->jumlah_suara_sah < 10) {{ strval($form->jumlah_suara_sah)[0] }}
-                              @endif
+
                         </th>
                         <th class="text-center" id="suara3">
                           @if (!empty($form) && $form->jumlah_suara_sah > 99)
                           {{ strval($form->jumlah_suara_sah)[2] }}
-                          @endif
-                          @if (!empty($form) && $form->jumlah_suara_sah > 9 && $form->jumlah_suara_sah < 100) {{
+                          @elseif (!empty($form) && $form->jumlah_suara_sah > 9 && $form->jumlah_suara_sah < 100) {{
                             strval($form->jumlah_suara_sah)[1] }}
+                            @else
+                            0
                             @endif
-                            @if (empty($form) || $form->jumlah_suara_sah < 10) {{ strval($form->jumlah_suara_sah)[0] }}
-                              @endif
-                              @if (empty($form))
-                              0
-                              @endif
+
                         </th>
 
                       </tr>
@@ -204,43 +206,40 @@
                         <td class="text-center">
                           @if (!empty($form) && $form->jumlah_suara_tidak_sah > 99)
                           <input type="text" name="suara_tidak_sah[]" pattern="[0-9]" maxlength="1"
-                            class="form-control text-center" placeholder="0-9" onkeyup="rekap()"
+                            class="form-control text-center"  onkeyup="rekap()"
                             value="{{ strval($form->jumlah_suara_tidak_sah)[0] }}">
                           @else
                           <input type="text" name="suara_tidak_sah[]" pattern="[0-9]" maxlength="1"
-                            class="form-control text-center" placeholder="0-9" onkeyup="rekap()">
+                            class="form-control text-center"  onkeyup="rekap()">
                           @endif
                         </td>
                         <td class="text-center">
                           @if (!empty($form) && $form->jumlah_suara_tidak_sah > 99)
                           <input type="text" name="suara_tidak_sah[]" pattern="[0-9]" maxlength="1"
-                            class="form-control text-center" placeholder="0-9" onkeyup="rekap()"
+                            class="form-control text-center"  onkeyup="rekap()"
                             value="{{ strval($form->jumlah_suara_tidak_sah)[1] }}">
-                          @endif
-                          @if (!empty($form) && $form->jumlah_suara_tidak_sah > 9 && $form->jumlah_suara_tidak_sah <
+                          @elseif (!empty($form) && $form->jumlah_suara_tidak_sah > 9 && $form->jumlah_suara_tidak_sah <
                             100) <input type="text" name="suara_tidak_sah[]" pattern="[0-9]" maxlength="1"
-                            class="form-control text-center" placeholder="0-9" onkeyup="rekap()"
+                            class="form-control text-center"  onkeyup="rekap()"
                             value="{{ strval($form->jumlah_suara_tidak_sah)[0] }}">
+                            @else
+                            <input type="text" name="suara_tidak_sah[]" pattern="[0-9]" maxlength="1"
+                              class="form-control text-center"  onkeyup="rekap()">
                             @endif
-                            @if (!empty($form) && $form->jumlah_suara_tidak_sah < 10) <input type="text"
-                              name="suara_tidak_sah[]" pattern="[0-9]" maxlength="1" class="form-control text-center"
-                              placeholder="0-9" onkeyup="rekap()">
-                              @endif
                         </td>
                         <td class="text-center">
                           @if (!empty($form) && $form->jumlah_suara_tidak_sah > 99)
                           <input type="text" name="suara_tidak_sah[]" pattern="[0-9]" maxlength="1"
-                            class="form-control text-center" placeholder="0-9" onkeyup="rekap()"
+                            class="form-control text-center"  onkeyup="rekap()"
                             value="{{ strval($form->jumlah_suara_tidak_sah)[2] }}">
-                          @endif
-                          @if (!empty($form) && $form->jumlah_suara_tidak_sah > 9 && $form->jumlah_suara_tidak_sah <
+                          @elseif (!empty($form) && $form->jumlah_suara_tidak_sah > 9 && $form->jumlah_suara_tidak_sah <
                             100) <input type="text" name="suara_tidak_sah[]" pattern="[0-9]" maxlength="1"
-                            class="form-control text-center" placeholder="0-9" onkeyup="rekap()"
+                            class="form-control text-center"  onkeyup="rekap()"
                             value="{{ strval($form->jumlah_suara_tidak_sah)[1] }}">
-                            @endif
-                            @if (!empty($form) && $form->jumlah_suara_tidak_sah < 10) <input type="text"
+                            @else
+                             <input type="text"
                               name="suara_tidak_sah[]" pattern="[0-9]" maxlength="1" class="form-control text-center"
-                              placeholder="0-9" onkeyup="rekap()">
+                               onkeyup="rekap()">
                               @endif
                               <input type="hidden" name="rekapSuaraTidakSah[]">
                         </td>
@@ -258,25 +257,23 @@
                         <th class="text-center" id="totalSuara2">
                           @if (!empty($form) && $form->jumlah_suara > 9 && $form->jumlah_suara < 100) {{ strval($form->
                             jumlah_suara)[0] }}
-                            @endif
-                            @if (!empty($form) && $form->jumlah_suara > 99)
+                            @elseif (!empty($form) && $form->jumlah_suara > 99)
                             {{ strval($form->jumlah_suara)[1] }}
+                            @else
+                            0
                             @endif
-                            @if (empty($form) || $form->jumlah_suara < 10) {{ strval($form->jumlah_suara)[0] }}
-                              @endif
+
                         </th>
                         <th class="text-center" id="totalSuara3">
                           @if (!empty($form) && $form->jumlah_suara > 99)
                           {{ strval($form->jumlah_suara)[2] }}
-                          @endif
-                          @if (!empty($form) && $form->jumlah_suara > 9 && $form->jumlah_suara < 100) {{ strval($form->
+                          @elseif (!empty($form) && $form->jumlah_suara > 9 && $form->jumlah_suara < 100) {{ strval($form->
                             jumlah_suara)[1] }}
+                            @else
+                            0
                             @endif
-                            @if (empty($form) || $form->jumlah_suara < 10) {{ strval($form->jumlah_suara)[0] }}
-                              @endif
-                              @if (empty($form))
-                              0
-                              @endif
+
+
                         </th>
                       </tr>
                     </tfoot>
@@ -328,8 +325,8 @@
       </div>
       @if (!empty($form))
       <div class="card">
-        <a href="#image-c1" class="text-body collbodyd collapsed" data-bs-toggle="collapse"
-          aria-haspopup="true" aria-expanded="false" aria-controls="addproduct-img-collapse">
+        <a href="#image-c1" class="text-body collbodyd collapsed" data-bs-toggle="collapse" aria-haspopup="true"
+          aria-expanded="false" aria-controls="addproduct-img-collapse">
           <div class="p-4">
             <div class="d-flex align-items-center">
               <div class="flex-shrink-0 me-3">
@@ -370,17 +367,18 @@
                 <tbody class="align-middle">
                   <tr>
                     <td class="text-center">1</td>
-                    <td> {{ $form->tps->nama }}</td>
+                    <td> {{ $form->tps->nama }} - {{ $form->tps->desa }} </td>
                     <td>{{ $form->tps->kecamatan }}</td>
                     <td class="text-center">{{ $form->tps->kabupaten }}</td>
                     <td class="text-center">
                       @if (!empty($form->file_c1))
-                      <a href="{{ asset('storage/' . $form->file_c1) }}" target="_blank" class="btn btn-primary">Lihat File</a>
+                      <a href="{{ asset('storage/' . $form->file_c1) }}" target="_blank" class="btn btn-primary">Lihat
+                        File</a>
                       @else
                       <span class="text-danger">File belum diupload</span>
                       @endif
                     </td>
-                    <td class="text-center">{{ $form->created_at }}</td>
+                    <td class="text-center">{{ date('d/m/Y H:i', strtotime($form->created_at)) }} WIB</td>
                   </tr>
                 </tbody>
               </table>
